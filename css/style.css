@@ -145,14 +145,18 @@ body.bg-secondary-dark {
 #chat nav ul {
 	padding: 0;
 	list-style-type: none;
+	display: flex;
+	gap: 30px;
+	align-items: center;
 }
-#chat nav ul a {
-	color: var(--secondary-light);
+#chat nav ul li, #chat nav ul a {
+	color: var(--primary-light);
 	font-size: 1.25rem;
 	transition: .3s;
+	font-weight: 700;
 }
 #chat nav ul a:hover {
-	color: var(--primary-light);
+	color: var(--secondary-light);
 }
 #chat .side-main-wrap {
 	display: grid;

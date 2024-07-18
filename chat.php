@@ -26,7 +26,7 @@
 			<nav>
 				<span class="site-logo">Chat App.</span>
 				<ul>
-					<li><?php if(isset($_COOKIE['user_name'])) echo $_COOKIE['user_name']; ?></li>
+					<li><span title="自分"><?php if(isset($_COOKIE['user_name'])) echo $_COOKIE['user_name']; ?></span></li>
 					<li><a href="logout.php" title="ログアウト"><i class="fa-solid fa-right-from-bracket"></i></a></li>
 				</ul>
 			</nav>
