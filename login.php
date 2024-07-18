@@ -30,7 +30,9 @@
 			$_SESSION['error_message'] = "名前またはパスワードが違います。";
 			return false;
 		}
-		
+
+		setcookie('user_id', $row[0]['id'], time() + 7 * 24 * 60 * 60);
+		setcookie('user_name', $name, time() + 7 * 24 * 60 * 60);
 		return true;
 	}
 
