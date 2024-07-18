@@ -1,9 +1,12 @@
 <?php
+	include('db_chat.php');
 
 	# ログインしないと、このページは表示できません
 	if (!isset($_COOKIE['user_id']) &&  !isset($_COOKIE['user_name'])) {
 		header("Location: login.php");
 	}
+
+	$userList = getUserList();
 
 ?>
 <!DOCTYPE html>
@@ -61,7 +64,7 @@
 
 		<main id="chat-main">
 			
-			<form action="chat_functions.php" method="post">
+			<form action="db_chat.php" method="post">
 				
 				<div class="chat-wrapper">
 
@@ -69,9 +72,9 @@
 						<span class="to-span">To: </span>
 						<select name="slUserList" id="slUserList">
 							<option value=""></option>
-							<option value="1">Test</option>
-							<option value="2">Seinn</option>
-							<option value="3">Testtt</option>
+							<?php foreach ($userList as $user): ?>
+								<option value="<?= $user['id'] ?>"><?= $user['name'] ?></option>
+							<?php endforeach; ?>
 						</select>
 					</div>
 
