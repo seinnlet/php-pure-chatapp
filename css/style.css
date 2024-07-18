@@ -83,6 +83,7 @@ body.bg-secondary-dark {
 	font-size: 1.25rem;
 	padding: 16px 0;
 	border-bottom: 1px solid var(--secondary-light);
+	color-scheme: dark;
 }
 .form-container .form-group input:focus, .chat-message-wrapper form textarea:focus {
 	outline: none;
