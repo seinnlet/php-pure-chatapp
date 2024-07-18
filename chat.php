@@ -27,6 +27,7 @@
 				<span class="site-logo">Chat App.</span>
 				<ul>
 					<li><span title="自分"><?php if(isset($_COOKIE['user_name'])) echo $_COOKIE['user_name']; ?></span></li>
+					<li><a href="chat.php" title="新規メッセージ"><i class="fa-regular fa-square-plus"></i></a></li>
 					<li><a href="logout.php" title="ログアウト"><i class="fa-solid fa-right-from-bracket"></i></a></li>
 				</ul>
 			</nav>
@@ -59,34 +60,53 @@
 		</aside>
 
 		<main id="chat-main">
-			<div class="chat-wrapper">
-				<div class="name">Seinn</div>
-				<div class="chat right">
-					<div class="time-read">
-						<span class="read">Read</span>
-						<span class="time">11:29</span>
+			
+			<form action="chat_functions.php" method="post">
+				
+				<div class="chat-wrapper">
+
+					<div class="to-message">
+						<span class="to-span">To: </span>
+						<select name="slUserList" id="slUserList">
+							<option value=""></option>
+							<option value="1">Test</option>
+							<option value="2">Seinn</option>
+							<option value="3">Testtt</option>
+						</select>
 					</div>
-					<div class="message">Hello</div>
+
+				<!-- <div class="name">Seinn</div>
+					<div class="chat right">
+						<div class="time-read">
+							<span class="read">Read</span>
+							<span class="time">11:29</span>
+						</div>
+						<div class="message">Hello</div>
+					</div>
+
+					<div class="chat left">
+						<div class="time-read">
+							<span class="time">11:29</span>
+						</div>
+						<div class="message">Lorem ipsum dolor sit amet consectetur adipisicing elit. Sit mollitia architecto tempora quibusdam praesentium excepturi ipsa, saepe laudantium consectetur veritatis ab voluptatibus aut, alias blanditiis veniam autem voluptatum dignissimos earum?</div>
+					</div> -->
+
+				</div> 
+				
+				<div class="chat-message-wrapper">
+					<textarea name="taMessage" id="taMessage" placeholder="Message..."></textarea>
+					<button type="submit" class="btn-primary" name="btnSend">送る</button>
 				</div>
 
-				<div class="chat left">
-					<div class="time-read">
-						<span class="time">11:29</span>
-					</div>
-					<div class="message">Lorem ipsum dolor sit amet consectetur adipisicing elit. Sit mollitia architecto tempora quibusdam praesentium excepturi ipsa, saepe laudantium consectetur veritatis ab voluptatibus aut, alias blanditiis veniam autem voluptatum dignissimos earum?</div>
-				</div>
-			</div>
-			
-			<div class="chat-message-wrapper">
-				<form action="chat.php">
-					<textarea name="taMessage" id="taMessage" placeholder="Message..."></textarea>
-					<button type="submit" class="btn-primary">送る</button>
-				</form>
-			</div>
+			</form>
+
 		</main>
+
 	</div>
 
 	<!-- fontawesome -->
 	<script src="https://kit.fontawesome.com/9670cd3151.js" crossorigin="anonymous"></script>
+	<script src="js/jquery-3.7.1.min.js"></script>
+	<script src="js/custom-select.js"></script>
 </body>
 </html>

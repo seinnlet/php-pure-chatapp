@@ -76,7 +76,7 @@ body.bg-secondary-dark {
 .form-container .form-group label {
 	color: var(--secondary-light);
 }
-.form-container .form-group input, .chat-message-wrapper form textarea {
+.form-container .form-group input, .chat-message-wrapper textarea {
 	border: none;
 	background-color: var(--primary-dark);
 	color: var(--primary-light);
@@ -85,7 +85,7 @@ body.bg-secondary-dark {
 	border-bottom: 1px solid var(--secondary-light);
 	color-scheme: dark;
 }
-.form-container .form-group input:focus, .chat-message-wrapper form textarea:focus {
+.form-container .form-group input:focus, .chat-message-wrapper textarea:focus {
 	outline: none;
 	border-bottom: 1px solid var(--accent-blue);
 	transition: border .3s ease-in-out;
@@ -146,7 +146,7 @@ body.bg-secondary-dark {
 	padding: 0;
 	list-style-type: none;
 	display: flex;
-	gap: 30px;
+	gap: 40px;
 	align-items: center;
 }
 #chat nav ul li, #chat nav ul a {
@@ -223,7 +223,10 @@ body.bg-secondary-dark {
 /* ----- main ----- */
 #chat-main {
 	height: 100%;
-	padding: 0 40px;
+	padding-left: 40px;
+}
+#chat-main form {
+	height: 100%;
 	display: flex;
 	flex-wrap: wrap;
 	flex-direction: column;
@@ -237,12 +240,11 @@ body.bg-secondary-dark {
 	flex-flow: column wrap;
 	gap: 15px;
 }
-#chat-main .chat-wrapper .name {
+#chat-main .chat-wrapper .name, #chat-main .to-message .to-span {
 	color: var(--primary-light);
 	font-weight: 900;
 	font-size: 1.2rem;
 }
-
 #chat-main .chat-wrapper .chat {
 	display: flex;
 	align-items: flex-end;
@@ -280,24 +282,184 @@ body.bg-secondary-dark {
 	align-items: flex-start;;
 }
 
-#chat-main .chat-message-wrapper form {
+#chat-main .chat-message-wrapper {
 	display: flex;
 	align-items: flex-end;
 	margin-bottom: 30px;
 	gap: 30px;
 }
-#chat-main .chat-message-wrapper form textarea {
+#chat-main .chat-message-wrapper textarea {
 	flex: 1 1 0;
 	height: 50px;
 }
-#chat-main .chat-message-wrapper form button {
+#chat-main .chat-message-wrapper button {
 	width: 100px;
 }
 
+/* ----- custom select ----- */
+#chat-main .to-message {
+	display: flex;
+	gap: 30px;
+	align-items: center;
+}
+#chat-main .to-message select {
+	flex: 1 1 0;
+}
+#chat-main select {
+	display: none !important;
+}
+#chat-main .dropdown-select {
+	background-repeat: repeat-x;
+	filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#40FFFFFF', endColorstr='#00FFFFFF', GradientType=0);
+	background-color: var(--primary-dark);
+	border-bottom: 1px solid var(--secondary-light);
+	box-sizing: border-box;
+	cursor: pointer;
+	display: block;
+	float: left;
+	color: var(--primary-light);
+	font-weight: 600;
+	height: 42px;
+	line-height: 40px;
+	outline: none;
+	padding-left: 18px;
+	padding-right: 30px;
+	position: relative;
+	text-align: left !important;
+	transition: all 0.2s ease-in-out;
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+	white-space: nowrap;
+	width: auto;
+
+}
+#chat-main .dropdown-select:focus,
+#chat-main .dropdown-select:active,
+#chat-main .dropdown-select.open {
+	border-bottom: 1px solid var(--accent-blue);
+}
+#chat-main .dropdown-select:after {
+	height: 0;
+	width: 0;
+	border-left: 4px solid transparent;
+	border-right: 4px solid transparent;
+	border-top: 4px solid #777;
+	-webkit-transform: origin(50% 20%);
+	transform: origin(50% 20%);
+	transition: all 0.125s ease-in-out;
+	content: '';
+	display: block;
+	margin-top: -2px;
+	pointer-events: none;
+	position: absolute;
+	right: 10px;
+	top: 50%;
+}
+#chat-main .dropdown-select.open:after {
+	-webkit-transform: rotate(-180deg);
+	transform: rotate(-180deg);
+}
+#chat-main .dropdown-select.open .list {
+	-webkit-transform: scale(1);
+	transform: scale(1);
+	opacity: 1;
+	pointer-events: auto;
+}
+#chat-main .dropdown-select.open .option {
+	cursor: pointer;
+}
+#chat-main .dropdown-select.wide {
+	width: 100%;
+}
+#chat-main .dropdown-select.wide .list {
+	left: 0 !important;
+	right: 0 !important;
+}
+#chat-main .dropdown-select .list {
+	box-sizing: border-box;
+	transition: all 0.15s cubic-bezier(0.25, 0, 0.25, 1.75), opacity 0.1s linear;
+	-webkit-transform: scale(0.75);
+	transform: scale(0.75);
+	-webkit-transform-origin: 50% 0;
+	transform-origin: 50% 0;
+	background-color: var(--secondary-dark);
+	margin-top: 4px;
+	padding: 3px 0;
+	opacity: 0;
+	overflow: hidden;
+	pointer-events: none;
+	position: absolute;
+	top: 100%;
+	left: 0;
+	z-index: 999;
+	max-height: 250px;
+	overflow: auto;
+	border-bottom: 1px solid var(--secondary-light);
+}
+#chat-main .dropdown-select .list:hover .option:not(:hover) {
+	background-color: transparent !important;
+}
+#chat-main .dropdown-select .dd-search{
+	overflow: hidden;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	margin: 0.5rem 0;
+	padding-left: 18px;
+	padding-right: 29px;
+}
+#chat-main .dropdown-select .dd-searchbox{
+	width: 100%;
+	padding: 0.5rem;
+	border: 1px solid var(--secondary-light);
+	border-radius: 4px;
+	outline: none;
+	background-color: transparent;
+	color: var(--primary-light);
+	font-size: 1rem;
+}
+#chat-main .dropdown-select .dd-searchbox:focus{
+	border-color: var(--accent-blue);
+}
+#chat-main .dropdown-select .list ul {
+	padding: 0;
+}
+#chat-main .dropdown-select .option {
+	cursor: default;
+	font-weight: 400;
+	line-height: 40px;
+	outline: none;
+	padding-left: 18px;
+	padding-right: 29px;
+	transition: all 0.2s;
+	list-style: none;
+}
+#chat-main .dropdown-select .option:hover,
+#chat-main .dropdown-select .option:focus {
+	background-color: var(--primary-dark) !important;
+}
+#chat-main .dropdown-select .option.selected {
+	font-weight: 900;
+	color: var(--accent-blue);
+}
+#chat-main .dropdown-select .option.selected:focus {
+	background: #f6f6f6;
+}
+#chat-main .dropdown-select a {
+	color: var(--secondary-light);
+	text-decoration: none;
+	transition: all 0.2s ease-in-out;
+}
+
 /* ----- responsive ----- */
-@media screen and (max-width: 1440px) {
-	#chat .container {
+@media screen and (max-width: 1520px) {
+	#chat .container, #chat-main {
 		padding: 0 40px;
+	}
+	#chat .side-main-wrap {
+		max-width: 1520px;
 	}
 }
 @media screen and (max-width: 768px) {
