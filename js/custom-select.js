@@ -99,6 +99,14 @@ $(document).on('keydown', '.dropdown-select', function (event) {
 	}
 });
 
+function validateSelect() {
+	if(!$('#slUserList').val()) {
+		alert('宛先を入れてください。');
+		return false;
+	} 
+	return true;
+}
+
 $(document).ready(function () {
 	create_custom_dropdowns();
 });

@@ -64,41 +64,45 @@
 
 		<main id="chat-main">
 			
-			<form action="db_chat.php" method="post">
+			<form action="db_chat.php" method="post" <?php if (!isset($_GET['r_id'])) echo 'onsubmit="return validateSelect()"'; ?>>
 				
 				<div class="chat-wrapper">
 
-					<div class="to-message">
-						<span class="to-span">To: </span>
-						<select name="slUserList" id="slUserList">
-							<option value=""></option>
-							<?php foreach ($userList as $user): ?>
-								<option value="<?= $user['id'] ?>"><?= $user['name'] ?></option>
-							<?php endforeach; ?>
-						</select>
-					</div>
-
-				<!-- <div class="name">Seinn</div>
-					<div class="chat right">
-						<div class="time-read">
-							<span class="read">Read</span>
-							<span class="time">11:29</span>
+					<?php if (!isset($_GET['r_id'])): ?>
+						<div class="to-message">
+							<span class="to-span">To: </span>
+							<select name="slUserList" id="slUserList">
+								<option value=""></option>
+								<?php foreach ($userList as $user): ?>
+									<option value="<?= $user['id'] ?>"><?= $user['name'] ?></option>
+								<?php endforeach; ?>
+							</select>
 						</div>
-						<div class="message">Hello</div>
-					</div>
+					<?php endif; ?>
 
-					<div class="chat left">
-						<div class="time-read">
-							<span class="time">11:29</span>
+					<?php if (isset($_GET['r_id'])): ?>
+						<div class="name">Seinn</div>
+						<div class="chat right">
+							<div class="time-read">
+								<span class="read">Read</span>
+								<span class="time">11:29</span>
+							</div>
+							<div class="message">Hello</div>
 						</div>
-						<div class="message">Lorem ipsum dolor sit amet consectetur adipisicing elit. Sit mollitia architecto tempora quibusdam praesentium excepturi ipsa, saepe laudantium consectetur veritatis ab voluptatibus aut, alias blanditiis veniam autem voluptatum dignissimos earum?</div>
-					</div> -->
+
+						<div class="chat left">
+							<div class="time-read">
+								<span class="time">11:29</span>
+							</div>
+							<div class="message">Lorem ipsum dolor sit amet consectetur adipisicing elit. Sit mollitia architecto tempora quibusdam praesentium excepturi ipsa, saepe laudantium consectetur veritatis ab voluptatibus aut, alias blanditiis veniam autem voluptatum dignissimos earum?</div>
+						</div>
+					<?php endif; ?>
 
 				</div> 
 				
 				<div class="chat-message-wrapper">
-					<textarea name="taMessage" id="taMessage" placeholder="Message..."></textarea>
-					<button type="submit" class="btn-primary" name="btnSend">送る</button>
+					<textarea name="taMessage" id="taMessage" placeholder="Message..." required></textarea>
+					<button type="<?php echo (isset($_GET['r_id'])) ? 'button' : 'submit';  ?>" class="btn-primary" name="btnSend">送る</button>
 				</div>
 
 			</form>
