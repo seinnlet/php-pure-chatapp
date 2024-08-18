@@ -1,5 +1,5 @@
 <?php
-	include('connect.php');
+	include('db_connect.php');
 
 	# 空入力と、ユーザー名とパスワードが合っているかチェックする
 	# Return		true/false

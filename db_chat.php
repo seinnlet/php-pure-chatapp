@@ -1,5 +1,5 @@
 <?php
-	include('connect.php');
+	include('db_connect.php');
 
 	function getUserList() {
 		$conn = dbConnect();

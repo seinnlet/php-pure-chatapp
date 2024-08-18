@@ -1,5 +1,5 @@
 <?php
-	include('connect.php');
+	include('db_connect.php');
 
 	# 空入力と、ユーザー名に重複がないかチェックする
 	# Return		true/false
