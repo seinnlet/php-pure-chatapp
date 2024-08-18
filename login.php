@@ -1,7 +1,7 @@
 <?php
 	include('db_connect.php');
 
-	# 空入力と、ユーザー名とパスワードが合っているかチェックする
+	# ヌル入力と、ユーザー名とパスワードが合っているかチェック
 	# Return		true/false
 	# Params		$name String 入力のユーザー名、$password String 入力のパスワード
 	function validateInput($name, $password) {
@@ -36,10 +36,11 @@
 		return true;
 	}
 
+	# ログインボタンクリック
 	if (isset($_POST['btnLogIn'])) {
 
 		$name = trim(htmlspecialchars($_POST['txtName']));
-		$password = trim(htmlspecialchars($_POST['txtPassword']));
+		$password = htmlspecialchars($_POST['txtPassword']);
 
 		if (validateInput($name, $password)) {
 			header("Location: chat.php");

@@ -1,7 +1,7 @@
 <?php
 	include('db_connect.php');
 
-	# 空入力と、ユーザー名に重複がないかチェックする
+	# ヌル入力と、ユーザー名に重複がないかチェック
 	# Return		true/false
 	# Params		$name String 入力のユーザー名、$password String 入力のパスワード
 	function validateInput($name, $password) {
@@ -33,7 +33,7 @@
 		return true;
 	}
 
-	# 新ユーザーをデータベースに挿入
+	# 新ユーザー登録
 	# Params		$name String 入力の名前、$password String 入力のパスワード
 	function createUser($name, $password) {
 		$conn = dbConnect();
@@ -49,10 +49,11 @@
 		} 
 	}
 
+	# 登録ボタンクリック
 	if (isset($_POST['btnSignUp'])) {
 		
 		$name = trim(htmlspecialchars($_POST['txtName']));
-		$password = trim(htmlspecialchars($_POST['txtPassword']));
+		$password = htmlspecialchars($_POST['txtPassword']);
 		
 		if (validateInput($name, $password)) {
 			createUser($name, $password);
