@@ -46,9 +46,9 @@
 			<?php foreach ($roomList as $room): ?>
 				<a href="chat.php?r_id=<?= $room['room_id'] ?>">
 					<div class="pre-message-div <?= $room['room_id'] == isset($_GET['r_id']) && $_GET['r_id'] ? 'active' : '' ?>">
-						<div class="profile-circle"><?= substr($room['sender_name'], 0, 1) ?></div>
+						<div class="profile-circle"><?= substr($room['send_to_name'], 0, 1) ?></div>
 						<div class="message">
-							<div class="name"><?= $room['sender_name'] ?></div>
+							<div class="name"><?= ($room['sender_name'] == $_COOKIE['user_name']) ? 'You': $room['sender_name'] ?></div>
 							<div class="preview"><?= $room['last_message'] ?></div>
 						</div>
 						<?php if ($room['unread_messages'] != 0): ?>
