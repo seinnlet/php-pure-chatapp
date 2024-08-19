@@ -13,24 +13,30 @@
 
 	function getRoomList() {
 		$conn = dbConnect();
-		$sql =	'SELECT r.id AS room_id,
-									u_sender.name AS sender_name,
-									m.text AS last_message,
-									m.created_at AS last_message_time,
-									u_recipient.name AS send_to_name,
-									SUM(CASE WHEN m.read_status = 0 AND m.sender_id != :loggedin_user_id THEN 1 ELSE 0 END) AS unread_messages
+		$sql =	'SELECT r.id AS room_id, u_sender.name AS sender_name, m.text AS last_message, m.created_at AS last_message_time,
+									u_recipient.name AS send_to_name, IFNULL(unread.unread_messages, 0) AS unread_messages
 						FROM rooms r
 						JOIN participants p ON r.id = p.room_id
-						JOIN messages m ON r.id = m.room_id
+						JOIN (
+								SELECT m1.* FROM messages m1
+								WHERE m1.created_at = (
+										SELECT MAX(m2.created_at) FROM messages m2 WHERE m2.room_id = m1.room_id
+								)
+						) m ON r.id = m.room_id
 						JOIN users u_sender ON m.sender_id = u_sender.id
 						JOIN participants p_recipient ON r.id = p_recipient.room_id AND p_recipient.user_id != :loggedin_user_id
 						JOIN users u_recipient ON p_recipient.user_id = u_recipient.id
+						LEFT JOIN (
+								SELECT m.room_id, SUM(CASE WHEN m.read_status = 0 AND m.sender_id != :loggedin_user_id THEN 1 ELSE 0 END) AS unread_messages
+								FROM messages m
+								WHERE m.room_id IN (
+										SELECT room_id FROM participants WHERE user_id = :loggedin_user_id
+								)
+								GROUP BY m.room_id
+						) unread ON r.id = unread.room_id
 						WHERE p.user_id = :loggedin_user_id
-						GROUP BY r.id
-						HAVING m.created_at = (SELECT MAX(m2.created_at)
-																	FROM messages m2
-																	WHERE m2.room_id = r.id)
-						ORDER BY last_message_time DESC;';
+						GROUP BY r.id, m.id
+						ORDER BY m.created_at DESC;';
 		$stmt = $conn->prepare($sql);
 		$stmt->bindValue(':loggedin_user_id', (int)$_COOKIE['user_id'], PDO::PARAM_INT);
 		$stmt->execute();
