@@ -19,7 +19,7 @@
 		}
 		
 		$conn = dbConnect();
-		$sql = 'SELECT id FROM users WHERE name=:name AND password=:password';
+		$sql = 'SELECT id FROM users WHERE BINARY name=:name AND password=:password';
 		$stmt = $conn->prepare($sql);
 		$stmt->bindValue(':name', $name, PDO::PARAM_STR);
 		$stmt->bindValue(':password', md5($password), PDO::PARAM_STR);
