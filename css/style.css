@@ -203,6 +203,11 @@ body.bg-secondary-dark {
 }
 #chat .pre-message-div .message .preview {
 	color: var(--secondary-light);
+	overflow: hidden;
+	display: -webkit-box;
+	-webkit-line-clamp: 1; 
+					line-clamp: 1; 
+	-webkit-box-orient: vertical;
 }
 #chat .pre-message-div .count-msg {
 	margin: auto;

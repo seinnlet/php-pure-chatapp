@@ -7,6 +7,9 @@
 	}
 
 	$userList = getUserList();
+	$roomList = getRoomList();
+
+	if (isset($_GET['r_id'])) $messages = getMessages();
 
 ?>
 <!DOCTYPE html>
@@ -39,27 +42,22 @@
 
 	<div class="side-main-wrap">
 		<aside>
-			<a href="">
-				<div class="pre-message-div active">
-					<div class="profile-circle">S</div>
-					<div class="message">
-						<div class="name">Seinn</div>
-						<div class="preview">Hi!</div>
-					</div>
-					<div class="count-msg"></div>
-				</div>
-			</a>
 
-			<a href="">
-				<div class="pre-message-div">
-					<div class="profile-circle">T</div>
-					<div class="message">
-						<div class="name">Test</div>
-						<div class="preview">Hello</div>
+			<?php foreach ($roomList as $room): ?>
+				<a href="chat.php?r_id=<?= $room['room_id'] ?>">
+					<div class="pre-message-div <?= $room['room_id'] == isset($_GET['r_id']) && $_GET['r_id'] ? 'active' : '' ?>">
+						<div class="profile-circle"><?= substr($room['sender_name'], 0, 1) ?></div>
+						<div class="message">
+							<div class="name"><?= $room['sender_name'] ?></div>
+							<div class="preview"><?= $room['last_message'] ?></div>
+						</div>
+						<?php if ($room['unread_messages'] != 0): ?>
+							<div class="count-msg"><span><?= $room['unread_messages'] ?></span></div>
+						<?php endif; ?>
 					</div>
-					<div class="count-msg"><span>2</span></div>
-				</div>
 				</a>
+			<?php endforeach; ?>
+
 		</aside>
 
 		<main id="chat-main">
@@ -81,21 +79,19 @@
 					<?php endif; ?>
 
 					<?php if (isset($_GET['r_id'])): ?>
-						<div class="name">Seinn</div>
-						<div class="chat right">
-							<div class="time-read">
-								<span class="read">Read</span>
-								<span class="time">11:29</span>
-							</div>
-							<div class="message">Hello</div>
-						</div>
+						<div class="name"><?= getSenderName() ?></div>
 
-						<div class="chat left">
-							<div class="time-read">
-								<span class="time">11:29</span>
+						<?php foreach ($messages as $message): ?>
+							<div class="chat <?= $message['sender_id'] == $_COOKIE['user_id'] ? 'right': 'left' ?>">
+								<div class="time-read">
+									<span class="read"><?= $message['read_status'] == 1 ? 'Read': '' ?></span>
+									<?php $sendTime = strtotime( $message['created_at'] ); ?>
+									<span class="time"><?= date( 'G:i', $sendTime ) ?></span>
+								</div>
+								<div class="message"><?= $message['text'] ?></div>
 							</div>
-							<div class="message">Lorem ipsum dolor sit amet consectetur adipisicing elit. Sit mollitia architecto tempora quibusdam praesentium excepturi ipsa, saepe laudantium consectetur veritatis ab voluptatibus aut, alias blanditiis veniam autem voluptatum dignissimos earum?</div>
-						</div>
+						<?php endforeach; ?>
+
 					<?php endif; ?>
 
 				</div> 
