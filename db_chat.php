@@ -62,29 +62,47 @@
 	function createFirstMessage($sendToID, $message) {
 		$conn = dbConnect();
 
-		$sql = 'INSERT INTO rooms () VALUES ();';
+		$sql = 'SELECT r.id FROM rooms r
+						JOIN participants p1 ON r.id = p1.room_id
+						JOIN participants p2 ON r.id = p2.room_id
+						WHERE p1.user_id = :user_id_1 AND p2.user_id = :user_id_2;';
 		$stmt = $conn->prepare($sql);
+		$stmt->bindValue(':user_id_1', (int)$_COOKIE['user_id'], PDO::PARAM_INT);
+		$stmt->bindValue(':user_id_2', (int)$sendToID, PDO::PARAM_INT);
 		$stmt->execute();
+		$row = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-		$roomId = $conn->lastInsertId();
+		if (count($row) == 0) {
+			
+			$sql = 'INSERT INTO rooms () VALUES ();';
+			$stmt = $conn->prepare($sql);
+			$stmt->execute();
+
+			$roomId = $conn->lastInsertId();
+
+			$sql = 'INSERT INTO participants (`room_id`, `user_id`) VALUES (:room_id, :user_id);';
+			$stmt = $conn->prepare($sql);
+			$stmt->bindValue(':room_id',(int)$roomId, PDO::PARAM_INT);
+			$stmt->bindValue(':user_id', (int)$_COOKIE['user_id'], PDO::PARAM_STR);
+			$stmt->execute();
+			
+			$sql = 'INSERT INTO participants (`room_id`, `user_id`) VALUES (:room_id, :user_id);';
+			$stmt = $conn->prepare($sql);
+			$stmt->bindValue(':room_id',(int)$roomId, PDO::PARAM_INT);
+			$stmt->bindValue(':user_id',(int)$sendToID, PDO::PARAM_STR);
+			$stmt->execute();
+
+		} else {
+			
+			$roomId = $row[0]['id'];
+
+		}
 
 		$sql = 'INSERT INTO messages (`text`, `sender_id`, `room_id`) VALUES (:message, :sender_id, :room_id);';
 		$stmt = $conn->prepare($sql);
 		$stmt->bindValue(':message', $message, PDO::PARAM_STR);
 		$stmt->bindValue(':sender_id', (int)$_COOKIE['user_id'], PDO::PARAM_STR);
 		$stmt->bindValue(':room_id',(int)$roomId, PDO::PARAM_INT);
-		$stmt->execute();
-
-		$sql = 'INSERT INTO participants (`room_id`, `user_id`) VALUES (:room_id, :user_id);';
-		$stmt = $conn->prepare($sql);
-		$stmt->bindValue(':room_id',(int)$roomId, PDO::PARAM_INT);
-		$stmt->bindValue(':user_id', (int)$_COOKIE['user_id'], PDO::PARAM_STR);
-		$stmt->execute();
-		
-		$sql = 'INSERT INTO participants (`room_id`, `user_id`) VALUES (:room_id, :user_id);';
-		$stmt = $conn->prepare($sql);
-		$stmt->bindValue(':room_id',(int)$roomId, PDO::PARAM_INT);
-		$stmt->bindValue(':user_id',(int)$sendToID, PDO::PARAM_STR);
 		$stmt->execute();
 
 		return $roomId;
