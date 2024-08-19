@@ -25,6 +25,10 @@ body.bg-secondary-dark {
 	color: var(--primary-light);
 	font-weight: 700;
 	font-size: 1rem;
+	cursor: pointer;
+}
+.btn-primary:hover {
+	filter: brightness(90%) contrast(120%);
 }
 
 /* ----- scrollbar ----- */
