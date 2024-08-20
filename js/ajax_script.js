@@ -5,7 +5,7 @@ function fetchMessages() {
 	$.ajax({
 		type: "post",
 		url: `db_chat.php?r_id=${urlParams.get('r_id')}`,
-		data: {action: 'fetchMsg'},
+		data: { action: 'fetchMsg' },
 		success: function (response) {
 			$('#chat-wrapper').html(response);
 		}
@@ -16,7 +16,7 @@ function fetchRoomList() {
 	$.ajax({
 		type: "post",
 		url: `db_chat.php?r_id=${urlParams.get('r_id')}`,
-		data: {action: 'fetchRoomList'},
+		data: { action: 'fetchRoomList' },
 		success: function (response) {
 			$('#aside-room').html(response);
 		}
@@ -35,7 +35,7 @@ function sendMessage() {
 		$.ajax({
 			type: "post",
 			url: "db_chat.php",
-			data: {roomId: urlParams.get('r_id'), message: message, action: 'createMsg'},
+			data: { roomId: urlParams.get('r_id'), message: message, action: 'createMsg' },
 			success: function () {
 				$('#taMessage').val('');
 				fetchMessages();
@@ -44,24 +44,21 @@ function sendMessage() {
 			}
 		});
 	}
-	
 }
 
-$(function() {
+$(function () {
 
 	scrollChatToBottom();
-
 	setInterval(fetchRoomList, 5000);
-	
+
 	if (urlParams.has('r_id')) {
-		
+
 		setInterval(fetchMessages, 3000);
 
-		$('#btnSend').click(function (e) { 
+		$('#btnSend').click(function (e) {
 			e.preventDefault();
 			sendMessage();
 		});
-		
 	}
 
 	$('#taMessage').keydown(function (e) {
