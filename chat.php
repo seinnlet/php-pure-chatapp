@@ -4,6 +4,7 @@ include 'db_chat.php';
 # ログインしないと、このページは表示できません
 if (!isset($_COOKIE['user_id']) && !isset($_COOKIE['user_name'])) {
 	header("Location: login.php");
+	exit();
 }
 
 $userList = getUserList();

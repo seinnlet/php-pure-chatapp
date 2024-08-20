@@ -44,6 +44,7 @@ if (isset($_POST['btnLogIn'])) {
 
 	if (validateInput($name, $password)) {
 		header("Location: chat.php");
+		exit();
 	}
 }
 ?>

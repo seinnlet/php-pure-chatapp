@@ -58,6 +58,7 @@ if (isset($_POST['btnSignUp'])) {
 		createUser($name, $password);
 	} else {
 		header("Location: index.php");
+		exit();
 	}
 }
 ?>
