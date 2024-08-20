@@ -97,7 +97,7 @@ if (isset($_POST['btnLogIn'])) {
 	<!-- fontawesome -->
 	<script src="https://kit.fontawesome.com/9670cd3151.js" crossorigin="anonymous"></script>
 	<!-- js -->
-	<script src="js/main.js"></script>
+	<script src="js/custom-show-hide-btn.js"></script>
 </body>
 
 </html>

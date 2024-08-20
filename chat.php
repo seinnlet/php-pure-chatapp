@@ -118,7 +118,7 @@ if (isset($_GET['r_id'])) $messages = getMessages();
 	<!-- js -->
 	<script src="js/jquery-3.7.1.min.js"></script>
 	<script src="js/custom-select.js"></script>
-	<script src="js/ajax_script.js"></script>
+	<script src="js/script.js"></script>
 </body>
 
 </html>
