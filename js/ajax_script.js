@@ -61,13 +61,14 @@ $(function() {
 			e.preventDefault();
 			sendMessage();
 		});
-
-		$('#taMessage').keydown(function (e) {
-			if (e.shiftKey && e.key === 'Enter') {
-					e.preventDefault(); 
-					sendMessage();
-			}
-	});
 		
 	}
+
+	$('#taMessage').keydown(function (e) {
+		if (e.shiftKey && e.key === 'Enter') {
+			e.preventDefault();
+			urlParams.has('r_id') ? sendMessage() : $('#btnSend').click();
+		}
+	});
+
 });
