@@ -101,7 +101,7 @@
 				</div> 
 				
 				<div class="chat-message-wrapper">
-					<textarea name="taMessage" id="taMessage" placeholder="Message..." required></textarea>
+					<textarea name="taMessage" id="taMessage" placeholder="Message...&#10;(Shift+Enterキーで送る)" required></textarea>
 					<button type="<?php echo (isset($_GET['r_id'])) ? 'button' : 'submit';  ?>" class="btn-primary" name="btnSend" id="btnSend">送る</button>
 				</div>
 

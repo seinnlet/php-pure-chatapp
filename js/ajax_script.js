@@ -28,6 +28,25 @@ function scrollChatToBottom() {
 	chatBox.scrollTop(chatBox.prop("scrollHeight"));
 }
 
+function sendMessage() {
+	let message = $('#taMessage').val();
+
+	if (message) {
+		$.ajax({
+			type: "post",
+			url: "db_chat.php",
+			data: {roomId: urlParams.get('r_id'), message: message, action: 'createMsg'},
+			success: function () {
+				$('#taMessage').val('');
+				fetchMessages();
+				fetchRoomList();
+				scrollChatToBottom();
+			}
+		});
+	}
+	
+}
+
 $(function() {
 
 	scrollChatToBottom();
@@ -40,22 +59,15 @@ $(function() {
 
 		$('#btnSend').click(function (e) { 
 			e.preventDefault();
-			let message = $('#taMessage').val();
-
-			if (message) {
-				$.ajax({
-					type: "post",
-					url: "db_chat.php",
-					data: {roomId: urlParams.get('r_id'), message: message, action: 'createMsg'},
-					success: function () {
-						$('#taMessage').val('');
-						fetchMessages();
-						fetchRoomList();
-						scrollChatToBottom();
-					}
-				});
-			}
-			
+			sendMessage();
 		});
+
+		$('#taMessage').keydown(function (e) {
+			if (e.shiftKey && e.key === 'Enter') {
+					e.preventDefault(); 
+					sendMessage();
+			}
+	});
+		
 	}
 });
