@@ -61,8 +61,10 @@
 		$stmt->bindValue(':r_id', (int)$_GET['r_id'], PDO::PARAM_INT);
 		$stmt->bindValue(':loggedin_user_id', (int)$_COOKIE['user_id'], PDO::PARAM_INT);
 		$stmt->execute();
-		$senderName = $stmt->fetchAll(PDO::FETCH_ASSOC);
-		return $senderName[0]['name'];
+		$row = $stmt->fetchAll(PDO::FETCH_ASSOC);
+		$senderName = '';
+		if (count($row)) $senderName = $row[0]['name'];
+		return $senderName;
 	}
 
 	function createFirstMessage($sendToID, $message) {
