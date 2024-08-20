@@ -13,7 +13,7 @@ function create_custom_dropdowns() {
 		}
 	});
 
-	$('.dropdown-select ul').before('<div class="dd-search"><input id="txtSearchValue" autocomplete="off" onkeyup="filter()" class="dd-searchbox" type="text"></div>');
+	$('.dropdown-select ul').before('<div class="dd-search"><input id="txtSearchValue" autocomplete="off" onkeyup="filter()" class="dd-searchbox" type="text" placeholder="検索..."></div>');
 }
 
 // Event listeners
