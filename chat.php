@@ -30,7 +30,7 @@
 	<header>
 		<div class="container">
 			<nav>
-				<span class="site-logo">Chat App.</span>
+				<a href="chat.php" class="site-logo">Chat App.</a>
 				<ul>
 					<li><span title="自分"><?php if(isset($_COOKIE['user_name'])) echo $_COOKIE['user_name']; ?></span></li>
 					<li><a href="chat.php" title="新規メッセージ"><i class="fa-regular fa-square-plus"></i></a></li>
