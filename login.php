@@ -1,5 +1,6 @@
 <?php
 include 'db_connect.php';
+session_start();
 
 # ヌル入力と、ユーザー名とパスワードが合っているかチェック
 # Return		true/false

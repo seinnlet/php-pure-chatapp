@@ -13,5 +13,3 @@ function dbConnect() {
 		die("Connection failed: " . $e->getMessage());
 	}
 }
-
-session_start();

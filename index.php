@@ -1,5 +1,6 @@
 <?php
 include 'db_connect.php';
+session_start();
 
 # ヌル入力と、ユーザー名に重複がないかチェック
 # Return		true/false
