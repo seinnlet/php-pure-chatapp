@@ -244,20 +244,25 @@ body.bg-secondary-dark {
 }
 #chat-main .chat-wrapper {
 	flex: 1 1 0;
-	padding-top: 15px;
 	display: flex;
-	flex-flow: column wrap;
+	flex-direction: column;
 	gap: 15px;
+	overflow-y: auto;
+	padding-right: 10px;
 }
-#chat-main .chat-wrapper .name, #chat-main .to-message .to-span {
+#chat-main .name, #chat-main .to-message .to-span {
 	color: var(--primary-light);
 	font-weight: 900;
 	font-size: 1.2rem;
+}
+#chat-main .name, #chat-main .to-message {
+	padding-top: 15px;
 }
 #chat-main .chat-wrapper .chat {
 	display: flex;
 	align-items: flex-end;
 	gap: 10px;
+	min-height: min-content;
 }
 #chat-main .chat-wrapper .chat .time-read {
 	color: var(--secondary-light);
@@ -288,7 +293,7 @@ body.bg-secondary-dark {
 	order: -1
 }
 #chat-main .chat-wrapper .left .time-read {
-	align-items: flex-start;;
+	align-items: flex-start;
 }
 
 #chat-main .chat-message-wrapper {

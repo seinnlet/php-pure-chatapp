@@ -41,11 +41,11 @@
 	</header>
 
 	<div class="side-main-wrap">
-		<aside>
+		<aside id="aside-room">
 
 			<?php foreach ($roomList as $room): ?>
 				<a href="chat.php?r_id=<?= $room['room_id'] ?>">
-					<div class="pre-message-div <?= $room['room_id'] == isset($_GET['r_id']) && $_GET['r_id'] ? 'active' : '' ?>">
+					<div class="pre-message-div <?= isset($_GET['r_id']) && $room['room_id'] == $_GET['r_id']  ? 'active' : '' ?>">
 						<div class="profile-circle"><?= substr($room['send_to_name'], 0, 1) ?></div>
 						<div class="message">
 							<div class="name"><?= ($room['sender_name'] == $_COOKIE['user_name']) ? 'You': $room['sender_name'] ?></div>
@@ -64,7 +64,11 @@
 			
 			<form action="db_chat.php" method="post" <?php if (!isset($_GET['r_id'])) echo 'onsubmit="return validateSelect()"'; ?>>
 				
-				<div class="chat-wrapper">
+				<?php if (isset($_GET['r_id'])): ?>
+					<div class="name"><?= getSenderName() ?></div>
+				<?php endif; ?>
+
+				<div class="chat-wrapper" id="chat-wrapper">
 
 					<?php if (!isset($_GET['r_id'])): ?>
 						<div class="to-message">
@@ -79,14 +83,14 @@
 					<?php endif; ?>
 
 					<?php if (isset($_GET['r_id'])): ?>
-						<div class="name"><?= getSenderName() ?></div>
 
 						<?php foreach ($messages as $message): ?>
 							<div class="chat <?= $message['sender_id'] == $_COOKIE['user_id'] ? 'right': 'left' ?>">
 								<div class="time-read">
-									<span class="read"><?= $message['read_status'] == 1 ? 'Read': '' ?></span>
-									<?php $sendTime = strtotime( $message['created_at'] ); ?>
-									<span class="time"><?= date( 'G:i', $sendTime ) ?></span>
+									<?php if ($message['sender_id'] == $_COOKIE['user_id']): ?>
+										<span class="read"><?= $message['read_status'] == 1 ? '既読': '' ?></span>
+									<?php endif; ?>
+									<span class="time"><?= date( 'G:i', strtotime( $message['created_at'] ) ) ?></span>
 								</div>
 								<div class="message"><?= $message['text'] ?></div>
 							</div>
@@ -98,7 +102,7 @@
 				
 				<div class="chat-message-wrapper">
 					<textarea name="taMessage" id="taMessage" placeholder="Message..." required></textarea>
-					<button type="<?php echo (isset($_GET['r_id'])) ? 'button' : 'submit';  ?>" class="btn-primary" name="btnSend">送る</button>
+					<button type="<?php echo (isset($_GET['r_id'])) ? 'button' : 'submit';  ?>" class="btn-primary" name="btnSend" id="btnSend">送る</button>
 				</div>
 
 			</form>
@@ -111,5 +115,6 @@
 	<script src="https://kit.fontawesome.com/9670cd3151.js" crossorigin="anonymous"></script>
 	<script src="js/jquery-3.7.1.min.js"></script>
 	<script src="js/custom-select.js"></script>
+	<script src="js/ajax_script.js"></script>
 </body>
 </html>

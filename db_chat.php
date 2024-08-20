@@ -123,6 +123,74 @@
 		header("Location: chat.php?r_id=".$roomId);
 	}
 
+	function createMessage($message, $userId, $roomId) {
+		$conn = dbConnect();
+		$sql = 'INSERT INTO messages (`text`, `sender_id`, `room_id`) VALUES (:message, :sender_id, :room_id);';
+		$stmt = $conn->prepare($sql);
+		$stmt->bindValue(':message', $message, PDO::PARAM_STR);
+		$stmt->bindValue(':sender_id', $userId, PDO::PARAM_STR);
+		$stmt->bindValue(':room_id', $roomId, PDO::PARAM_INT);
+		$stmt->execute();
+	}
 
+	function updateReadStatus() {
+		$conn = dbConnect();
+		$sql = 'UPDATE messages SET read_status = 1 
+						WHERE room_id = :room_id 
+						AND sender_id != :sender_id 
+						AND read_status = 0';
+		$stmt = $conn->prepare($sql);
+		$stmt->bindValue(':room_id', (int)$_GET['r_id'], PDO::PARAM_INT);
+		$stmt->bindValue(':sender_id', (int)$_COOKIE['user_id'], PDO::PARAM_STR);
+		$stmt->execute();
+	}
+
+	if (isset($_POST['action'])) {
+		
+		if ($_POST['action'] == 'createMsg') {
+			$message = htmlspecialchars($_POST['message']);
+			$userId = (int)$_COOKIE['user_id'];
+			$roomId = (int)$_POST['roomId'];
+			createMessage($message, $userId, $roomId);
+		}
+
+		if ($_POST['action'] == 'fetchMsg') {
+			
+			$response = "";
+			updateReadStatus();
+
+			$messages = getMessages();
+			foreach ($messages as $message) {
+				$alignment = ($message['sender_id'] == $_COOKIE['user_id']) ? 'right' : 'left';
+				$readStatus = ($message['read_status'] == 1 && $message['sender_id'] == $_COOKIE['user_id']) ? '既読' : '';
+				$response .= '<div class="chat ' . $alignment . '">';
+				$response .= '<div class="time-read"><span class="read">' . $readStatus . '</span>';
+				$response .= '<span class="time">' . date( 'G:i', strtotime( $message['created_at'] ) ) . '</span></div>';
+				$response .= '<div class="message">' . $message['text'] .'</div></div>';
+			}
+			echo $response;
+		}
+		
+		if ($_POST['action'] == 'fetchRoomList') {
+			
+			$response = "";
+			$rooms = getRoomList();
+			foreach ($rooms as $room) {
+				
+				$roomStatus = isset($_GET['r_id']) && $room['room_id'] == $_GET['r_id']  ? 'active' : '';
+				$name = ($room['sender_name'] == $_COOKIE['user_name']) ? 'You': $room['sender_name'];
+				$response .= '<a href="chat.php?r_id=' . $room['room_id'] . '">';
+				$response .= '<div class="pre-message-div '. $roomStatus . '">';
+				$response .= '<div class="profile-circle">'.substr($room['send_to_name'], 0, 1).'</div>';
+				$response .= '<div class="message">';
+				$response .= '<div class="name">'. $name .'</div>';
+				$response .= '<div class="preview">'.$room['last_message'].'</div></div>';
+				if ($room['unread_messages'] != 0) $response .= '<div class="count-msg"><span>'.$room['unread_messages'].'</span></div>';
+				$response .= '</div></a>';
+				
+			}
+			echo $response;
+		}
+	}
 
 ?>
