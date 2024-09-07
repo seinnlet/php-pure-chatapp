@@ -1,6 +1,7 @@
 <?php
 include 'db_connect.php';
 session_start();
+if (isset($_SESSION['error_message']) && !isset($_POST['btnLogIn'])) unset($_SESSION['error_message']);
 
 # ヌル入力と、ユーザー名とパスワードが合っているかチェック
 # Return		true/false

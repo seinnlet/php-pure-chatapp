@@ -1,6 +1,7 @@
 <?php
 include 'db_connect.php';
 session_start();
+if (isset($_SESSION['error_message']) && !isset($_POST['btnSignUp'])) unset($_SESSION['error_message']);
 
 # ヌル入力と、ユーザー名に重複がないかチェック
 # Return		true/false
@@ -56,10 +57,7 @@ if (isset($_POST['btnSignUp'])) {
 
 	if (validateInput($name, $password)) {
 		createUser($name, $password);
-	} else {
-		header("Location: index.php");
-		exit();
-	}
+	} 
 }
 ?>
 
