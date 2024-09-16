@@ -1,6 +1,8 @@
 <?php
 include 'db_connect.php';
 
+# ログインユーザー以外のユーザー取得
+# Return		ユーザーリスト
 function getUserList() {
 	$conn = dbConnect();
 	$sql = 'SELECT * FROM users WHERE id != :id';
@@ -11,6 +13,8 @@ function getUserList() {
 	return $userList;
 }
 
+# ルーム取得(サイドバーの最後に送ったユーザー、メッセージとメッセージ数)
+# Return		ルームリスト
 function getRoomList() {
 	$conn = dbConnect();
 	$sql = 'SELECT r.id AS room_id, u_sender.name AS sender_name, m.text AS last_message, m.created_at AS last_message_time,
@@ -44,6 +48,8 @@ function getRoomList() {
 	return $roomList;
 }
 
+# 特定のルームのメッセージ取得
+# Return		メッセージ
 function getMessages() {
 	$conn = dbConnect();
 	$sql = 'SELECT * FROM messages WHERE room_id = :r_id';
@@ -54,6 +60,8 @@ function getMessages() {
 	return $messages;
 }
 
+# 特定のルームのログインユーザー以外のユーザー名を取得
+# Return		ユーザー名
 function getSenderName() {
 	$conn = dbConnect();
 	$sql = 'SELECT u.name FROM participants p, users u WHERE p.user_id = u.id AND p.room_id = :r_id AND p.user_id != :loggedin_user_id';
@@ -68,6 +76,9 @@ function getSenderName() {
 	return $senderName;
 }
 
+# 新ルーム新メッセージ登録
+# Params		$sendToID 相手のユーザーID、$message 入力のメッセージ
+# Return		ルームID
 function createFirstMessage($sendToID, $message) {
 	$conn = dbConnect();
 	$sql = 'SELECT r.id FROM rooms r
@@ -113,6 +124,7 @@ function createFirstMessage($sendToID, $message) {
 	return $roomId;
 }
 
+# 送るボタンクリック
 if (isset($_POST['btnSend'])) {
 
 	$sendToID = $_POST['slUserList'];
@@ -123,6 +135,8 @@ if (isset($_POST['btnSend'])) {
 	exit();
 }
 
+# 既存ルーム新メッセージ登録
+# Params		$message 入力のメッセージ、$userId 相手のユーザーID、$roomId ルームID
 function createMessage($message, $userId, $roomId) {
 	$conn = dbConnect();
 	$sql = 'INSERT INTO messages (`text`, `sender_id`, `room_id`) VALUES (:message, :sender_id, :room_id);';
@@ -133,6 +147,7 @@ function createMessage($message, $userId, $roomId) {
 	$stmt->execute();
 }
 
+# 既読ステータス更新
 function updateReadStatus() {
 	$conn = dbConnect();
 	$sql = 'UPDATE messages SET read_status = 1 
@@ -145,6 +160,7 @@ function updateReadStatus() {
 	$stmt->execute();
 }
 
+# AJAX処理
 if (isset($_POST['action'])) {
 
 	if ($_POST['action'] == 'createMsg') {
